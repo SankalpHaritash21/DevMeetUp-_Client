@@ -1,0 +1,5 @@
+- Created Vite + React application.
+- Removed unnessary file from project.
+- Added Tailwind Css to project.
+- Install dessy UI.
+- Added Navbar to project
