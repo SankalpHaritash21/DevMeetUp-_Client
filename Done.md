@@ -3,3 +3,8 @@
 - Added Tailwind Css to project.
 - Install dessy UI.
 - Added Navbar to project
+- Created Component folder for NavBar.
+- Install React Router Dom
+- Create Browser Router > Routes > Route=/ Body > RouteChildren
+- Created an Outlet in your Body Component
+- Created Footer
