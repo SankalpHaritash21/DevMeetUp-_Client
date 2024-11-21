@@ -8,3 +8,8 @@
 - Create Browser Router > Routes > Route=/ Body > RouteChildren
 - Created an Outlet in your Body Component
 - Created Footer
+- Created Login Page
+- Install axios
+- CORS- Improved for more security at middleware.
+- When you'r making the api call so pass axios=>{withCredentials: true}
+- Install redux-toolkit
