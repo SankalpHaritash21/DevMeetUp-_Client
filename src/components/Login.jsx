@@ -2,6 +2,9 @@ import axios from "axios";
 import { useState } from "react";
 import { BASE_URL } from "../utils/constants";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
+import { useDispatch } from "react-redux";
+import { addUser } from "../store/userSlice";
+import { useNavigate } from "react-router-dom";
 
 const AuthForm = () => {
   const [emailId, setEmail] = useState("Test1@gmail.com");
@@ -12,6 +15,7 @@ const AuthForm = () => {
   const [success, setSuccess] = useState(false);
   const [isSignUp, setIsSignUp] = useState(false); // State to toggle between login and sign up forms
   const [showPassword, setShowPassword] = useState(false); // State to toggle password visibility
+  const dispatch = useDispatch();
 
   // Signup logic
   const handleSignUp = async () => {
@@ -40,6 +44,7 @@ const AuthForm = () => {
       setError(err.response?.data?.message || "Sign Up failed.");
     }
   };
+  const navigate = useNavigate();
 
   // Login logic
   const handleLogin = async () => {
@@ -57,10 +62,11 @@ const AuthForm = () => {
         },
         { withCredentials: true }
       );
-      console.log(res);
 
+      dispatch(addUser(res.data));
       setSuccess(true);
       clearFields();
+      return navigate("/");
     } catch (err) {
       console.error("Login error:", err);
       setError(err.response?.data?.message || "Login failed.");

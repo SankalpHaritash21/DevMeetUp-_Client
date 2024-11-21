@@ -13,3 +13,17 @@
 - CORS- Improved for more security at middleware.
 - When you'r making the api call so pass axios=>{withCredentials: true}
 - Install redux-toolkit
+- Install react-redux + @reduxjs/toolkit
+- Created appStore and Configure Store => Provider=> createSlice=> add reducer to store
+- Login and see if your data is coming properly in store.
+- NavBar should update as soon as user logs in
+- Reafacteor our code
+- added Login and Logout feature to our project.
+-
+-
+-
+-
+-
+-
+-
+-
