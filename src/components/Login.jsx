@@ -6,7 +6,7 @@ import { useDispatch } from "react-redux";
 import { addUser } from "../store/userSlice";
 import { useNavigate } from "react-router-dom";
 
-const AuthForm = () => {
+const Login = () => {
   const [emailId, setEmail] = useState("Test1@gmail.com");
   const [password, setPassword] = useState("Test@1234");
   const [firstName, setFirstName] = useState("");
@@ -16,6 +16,7 @@ const AuthForm = () => {
   const [isSignUp, setIsSignUp] = useState(false); // State to toggle between login and sign up forms
   const [showPassword, setShowPassword] = useState(false); // State to toggle password visibility
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   // Signup logic
   const handleSignUp = async () => {
@@ -44,7 +45,6 @@ const AuthForm = () => {
       setError(err.response?.data?.message || "Sign Up failed.");
     }
   };
-  const navigate = useNavigate();
 
   // Login logic
   const handleLogin = async () => {
@@ -66,7 +66,7 @@ const AuthForm = () => {
       dispatch(addUser(res.data));
       setSuccess(true);
       clearFields();
-      return navigate("/");
+      return navigate("/", { replace: true });
     } catch (err) {
       console.error("Login error:", err);
       setError(err.response?.data?.message || "Login failed.");
@@ -197,4 +197,4 @@ const AuthForm = () => {
   );
 };
 
-export default AuthForm;
+export default Login;

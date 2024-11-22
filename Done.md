@@ -19,10 +19,10 @@
 - NavBar should update as soon as user logs in
 - Reafacteor our code
 - added Login and Logout feature to our project.
--
--
--
--
+- Refactor the code.
+- You should not be access other routes without login.
+- If token is not prsent, redirect user to login page.
+- Created Profile Page
 -
 -
 -
