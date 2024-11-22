@@ -13,67 +13,81 @@ const Login = () => {
   const [lastName, setLastName] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
-  const [isSignUp, setIsSignUp] = useState(false); // State to toggle between login and sign up forms
-  const [showPassword, setShowPassword] = useState(false); // State to toggle password visibility
+  const [isSignUp, setIsSignUp] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  // Signup logic
+  const validateEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  const validateName = (name) =>
+    name.trim().length >= 2 &&
+    name.trim().length <= 50 &&
+    /^[a-zA-Z\s-]+$/.test(name);
+
+  const validatePassword = (password) => password.length >= 8;
+
   const handleSignUp = async () => {
     if (!firstName || !lastName || !emailId || !password) {
       setError("Please fill in all fields.");
       return;
     }
 
+    if (!validateEmail(emailId)) {
+      setError("Please enter a valid email address.");
+      return;
+    }
+
+    if (!validateName(firstName) || !validateName(lastName)) {
+      setError(
+        "First and last names must be between 2-50 characters and contain only alphabetic characters, spaces, or hyphens."
+      );
+      return;
+    }
+
+    if (!validatePassword(password)) {
+      setError("Password must be at least 8 characters long.");
+      return;
+    }
+
     try {
       const res = await axios.post(
         `${BASE_URL}/signup`,
-        {
-          firstName,
-          lastName,
-          emailId,
-          password,
-        },
+        { firstName, lastName, emailId, password },
         { withCredentials: true }
       );
-      console.log(res);
-
       setSuccess(true);
       clearFields();
     } catch (err) {
-      console.error("Sign Up error:", err);
       setError(err.response?.data?.message || "Sign Up failed.");
     }
   };
 
-  // Login logic
   const handleLogin = async () => {
     if (!emailId || !password) {
       setError("Please fill in all fields.");
       return;
     }
 
+    if (!validateEmail(emailId)) {
+      setError("Please enter a valid email address.");
+      return;
+    }
+
     try {
       const res = await axios.post(
         `${BASE_URL}/login`,
-        {
-          emailId,
-          password,
-        },
+        { emailId, password },
         { withCredentials: true }
       );
-
       dispatch(addUser(res.data));
       setSuccess(true);
       clearFields();
-      return navigate("/", { replace: true });
+      navigate("/", { replace: true });
     } catch (err) {
-      console.error("Login error:", err);
       setError(err.response?.data?.message || "Login failed.");
     }
   };
 
-  // Clear input fields
   const clearFields = () => {
     setEmail("");
     setPassword("");
@@ -81,7 +95,6 @@ const Login = () => {
     setLastName("");
   };
 
-  // Form submit handler
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
@@ -94,9 +107,15 @@ const Login = () => {
     }
   };
 
+  const toggleForm = () => {
+    setIsSignUp(!isSignUp);
+    setError("");
+    clearFields();
+  };
+
   return (
-    <div className="flex justify-center items-center h-screen bg-gray-100">
-      <div className="w-96 p-6 shadow-lg bg-white rounded-md">
+    <div className="flex justify-center items-center h-screen bg-gray-900 text-white">
+      <div className="w-96 p-6 shadow-lg bg-gray-800 rounded-md">
         <h2 className="text-2xl font-bold mb-4 text-center">
           {isSignUp ? "Sign Up" : "Login"}
         </h2>
@@ -111,28 +130,28 @@ const Login = () => {
           {isSignUp && (
             <>
               <div className="mb-4">
-                <label htmlFor="firstName" className="block text-gray-700 mb-2">
+                <label htmlFor="firstName" className="block text-gray-400 mb-2">
                   First Name
                 </label>
                 <input
                   type="text"
                   id="firstName"
                   placeholder="Enter your first name"
-                  className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+                  className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   value={firstName}
                   onChange={(e) => setFirstName(e.target.value)}
                 />
               </div>
 
               <div className="mb-4">
-                <label htmlFor="lastName" className="block text-gray-700 mb-2">
+                <label htmlFor="lastName" className="block text-gray-400 mb-2">
                   Last Name
                 </label>
                 <input
                   type="text"
                   id="lastName"
                   placeholder="Enter your last name"
-                  className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+                  className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   value={lastName}
                   onChange={(e) => setLastName(e.target.value)}
                 />
@@ -141,27 +160,28 @@ const Login = () => {
           )}
 
           <div className="mb-4">
-            <label htmlFor="email" className="block text-gray-700 mb-2">
+            <label htmlFor="email" className="block text-gray-400 mb-2">
               Email
             </label>
             <input
               type="email"
               id="email"
               placeholder="Enter your email"
-              className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+              className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               value={emailId}
               onChange={(e) => setEmail(e.target.value)}
             />
           </div>
+
           <div className="mb-4 relative">
-            <label htmlFor="password" className="block text-gray-700 mb-2">
+            <label htmlFor="password" className="block text-gray-400 mb-2">
               Password
             </label>
             <input
-              type={showPassword ? "text" : "password"} // Toggle input type
+              type={showPassword ? "text" : "password"}
               id="password"
               placeholder="Enter your password"
-              className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+              className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
@@ -184,8 +204,8 @@ const Login = () => {
         <div className="text-center mt-4">
           <button
             type="button"
-            onClick={() => setIsSignUp(!isSignUp)}
-            className="text-blue-500 hover:underline"
+            onClick={toggleForm}
+            className="text-blue-400 hover:underline"
           >
             {isSignUp
               ? "Already have an account? Login here"

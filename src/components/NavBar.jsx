@@ -12,14 +12,14 @@ const NavBar = () => {
   const handleLogout = async () => {
     await axios.post(`${BASE_URL}/logout`, {}, { withCredentials: true });
     dispatch(removeUser());
-    navigate("/login", { replace: true });
+    return navigate("/login", { replace: true });
   };
 
   const handleHomeClick = () => {
     if (user) {
-      navigate("/", { replace: true });
+      return navigate("/", { replace: true });
     } else {
-      navigate("/login", { replace: true });
+      return navigate("/login", { replace: true });
     }
   };
 
