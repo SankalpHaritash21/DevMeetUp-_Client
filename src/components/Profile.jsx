@@ -1,17 +1,112 @@
 import { useSelector } from "react-redux";
+import { useState } from "react";
+import axios from "axios";
+import { BASE_URL } from "../utils/constants";
+import { BsPencil } from "react-icons/bs"; // Pencil icon
 
 const Profile = () => {
   const user = useSelector((store) => store.user);
+  const [uploading, setUploading] = useState(false);
+  const [image, setImg] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false); // Modal visibility state
+
+  // Open modal
+  const openModal = () => setIsModalOpen(true);
+
+  // Close modal
+  const closeModal = () => setIsModalOpen(false);
+
+  // Handle file upload
+  const onFileChange = async (e) => {
+    const file = e.target.files[0]; // Get selected file
+    if (!file) return;
+
+    try {
+      setUploading(true);
+
+      // Create FormData to send the file to the backend
+      const formData = new FormData();
+      formData.append("file", file);
+
+      // Send the image file to your backend
+      const backendResponse = await axios.post(
+        `${BASE_URL}/profile/image`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data", // Set proper headers
+          },
+          withCredentials: true, // Ensure cookies are sent for authentication
+        }
+      );
+
+      const updatedUser = backendResponse.data;
+      console.log("Backend response:", updatedUser);
+
+      // Update local state
+      setImg(updatedUser.photoUrl); // Update the image in local state
+      alert("Profile picture updated successfully!");
+    } catch (error) {
+      console.error("Error uploading image:", error);
+      alert("Failed to upload image.");
+    } finally {
+      setUploading(false);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gray-900 flex justify-center items-center px-4 py-10">
       <div className="bg-gray-800 rounded-xl shadow-lg p-6 w-full max-w-md">
         {/* Profile Header */}
-        <div className="flex flex-col items-center">
+        <div className="flex flex-col items-center relative">
+          {/* Profile Image with hover zoom effect */}
           <img
-            src={user?.photoUrl || "https://via.placeholder.com/150"}
+            src={image || user?.photoUrl || "https://via.placeholder.com/150"}
             alt="User Avatar"
-            className="w-28 h-28 rounded-full border-4 border-blue-500 shadow-md"
+            className="w-28 h-28 rounded-full border-4 border-blue-500 shadow-md mb-4 transform transition-all duration-300 ease-in-out hover:scale-110"
           />
+
+          {/* Pencil icon at the top right corner of the image */}
+          <BsPencil
+            className="absolute top-0 right-0 text-white bg-blue-500 p-2 rounded-full cursor-pointer"
+            onClick={openModal} // Opens modal on click
+          />
+
+          {/* Modal for uploading new image */}
+          {isModalOpen && (
+            <div className="fixed inset-0 bg-gray-700 bg-opacity-50 flex justify-center items-center z-50 transition-opacity duration-300 ease-in-out">
+              <div className="bg-white p-8 rounded-lg w-96 shadow-lg transform transition-all duration-300 ease-in-out scale-95 hover:scale-100">
+                <h2 className="text-2xl font-bold text-gray-800 mb-4 text-center">
+                  Upload New Profile Picture
+                </h2>
+
+                {/* File input */}
+                <input
+                  type="file"
+                  accept="image/*" // Accept only image files
+                  onChange={onFileChange} // Call onFileChange when a file is selected
+                  className="block w-full p-2 bg-gray-100 border border-gray-300 rounded-md text-sm text-gray-700 mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+
+                {uploading && (
+                  <p className="text-blue-400 mt-2 animate-pulse text-center">
+                    Uploading...
+                  </p>
+                )}
+
+                {/* Buttons */}
+                <div className="flex justify-between">
+                  <button
+                    className="w-full bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition-all duration-300 ease-in-out"
+                    onClick={closeModal} // Close modal on button click
+                  >
+                    Close
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+
           <h1 className="mt-4 text-2xl font-bold text-white">
             {`${user?.firstName} ${user?.lastName}`}
           </h1>

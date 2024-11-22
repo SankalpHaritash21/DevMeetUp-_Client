@@ -23,7 +23,6 @@
 - You should not be access other routes without login.
 - If token is not prsent, redirect user to login page.
 - Created Profile Page
--
--
+- Added Clodnary to project to upload image
 -
 -

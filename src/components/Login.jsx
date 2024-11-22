@@ -5,29 +5,33 @@ import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { useDispatch } from "react-redux";
 import { addUser } from "../store/userSlice";
 import { useNavigate } from "react-router-dom";
+import Skills from "../items/Skills"; // Import the Skills component
 
 const Login = () => {
-  const [emailId, setEmail] = useState("Test1@gmail.com");
-  const [password, setPassword] = useState("Test@1234");
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState(false);
-  const [isSignUp, setIsSignUp] = useState(false);
-  const [showPassword, setShowPassword] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const [age, setAge] = useState(0);
+  const [error, setError] = useState("");
+  const [skills, setSkills] = useState([]); // Skills array
+  const [gender, setGender] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [success, setSuccess] = useState(false);
+  const [firstName, setFirstName] = useState("");
+  const [isSignUp, setIsSignUp] = useState(false);
+  const [password, setPassword] = useState("Test@1234");
+  const [emailId, setEmail] = useState("Test1@gmail.com");
+  const [showPassword, setShowPassword] = useState(false);
 
   const validateEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
   const validateName = (name) =>
     name.trim().length >= 2 &&
     name.trim().length <= 50 &&
     /^[a-zA-Z\s-]+$/.test(name);
-
   const validatePassword = (password) => password.length >= 8;
 
   const handleSignUp = async () => {
-    if (!firstName || !lastName || !emailId || !password) {
+    if (!firstName || !lastName || !emailId || !password || !gender) {
       setError("Please fill in all fields.");
       return;
     }
@@ -49,14 +53,29 @@ const Login = () => {
       return;
     }
 
+    if (skills.length === 0) {
+      setError("Please add at least one skill.");
+      return;
+    }
+
     try {
       const res = await axios.post(
         `${BASE_URL}/signup`,
-        { firstName, lastName, emailId, password },
+        {
+          firstName,
+          lastName,
+          emailId,
+          password,
+          age: parseInt(age, 10),
+          gender,
+          skills,
+        },
         { withCredentials: true }
       );
       setSuccess(true);
+      dispatch(addUser(res.data));
       clearFields();
+      navigate("/", { replace: true });
     } catch (err) {
       setError(err.response?.data?.message || "Sign Up failed.");
     }
@@ -93,6 +112,9 @@ const Login = () => {
     setPassword("");
     setFirstName("");
     setLastName("");
+    setAge(0);
+    setGender("");
+    setSkills([]); // Clear skills
   };
 
   const handleSubmit = async (e) => {
@@ -111,6 +133,16 @@ const Login = () => {
     setIsSignUp(!isSignUp);
     setError("");
     clearFields();
+  };
+
+  const handleAddSkill = (newSkill) => {
+    if (!skills.includes(newSkill)) {
+      setSkills((prev) => [...prev, newSkill]);
+    }
+  };
+
+  const handleRemoveSkill = (skillToRemove) => {
+    setSkills((prev) => prev.filter((skill) => skill !== skillToRemove));
   };
 
   return (
@@ -154,6 +186,48 @@ const Login = () => {
                   className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   value={lastName}
                   onChange={(e) => setLastName(e.target.value)}
+                />
+              </div>
+
+              <div className="mb-4">
+                <label htmlFor="age" className="block text-gray-400 mb-2">
+                  Age
+                </label>
+                <input
+                  type="number"
+                  id="age"
+                  placeholder="Enter your age"
+                  className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  value={age}
+                  onChange={(e) => setAge(e.target.value)}
+                />
+              </div>
+
+              <div className="mb-4">
+                <label htmlFor="gender" className="block text-gray-400 mb-2">
+                  Gender
+                </label>
+                <select
+                  id="gender"
+                  className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  value={gender}
+                  onChange={(e) => setGender(e.target.value)}
+                >
+                  <option value="" disabled>
+                    Select your gender
+                  </option>
+                  <option value="male">Male</option>
+                  <option value="female">Female</option>
+                  <option value="other">Other</option>
+                </select>
+              </div>
+
+              {/* Skills Component */}
+              <div className="mb-4">
+                <Skills
+                  skills={skills}
+                  onAddSkill={handleAddSkill}
+                  onRemoveSkill={handleRemoveSkill}
                 />
               </div>
             </>
