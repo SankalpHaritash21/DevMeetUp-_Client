@@ -1,12 +1,11 @@
-import { Outlet, useNavigate } from "react-router-dom";
-import NavBar from "./NavBar";
-import Footer from "./Footer";
 import axios from "axios";
-import { BASE_URL } from "../utils/constants";
-import { useDispatch, useSelector } from "react-redux";
-import { addUser } from "../store/userSlice";
+import Footer from "./Footer";
+import NavBar from "./NavBar";
 import { useEffect } from "react";
-
+import { addUser } from "../store/userSlice";
+import { BASE_URL } from "../utils/constants";
+import { Outlet, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 const Body = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -31,13 +30,13 @@ const Body = () => {
     fetchUser();
   }, []);
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen select-none">
       <NavBar />
       {/* Ensure the main content grows and pushes the footer to the bottom */}
       <div className="flex-grow">
         <Outlet />
       </div>
-      {/* <Footer /> */}
+      <Footer />
     </div>
   );
 };

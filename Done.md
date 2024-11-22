@@ -22,7 +22,31 @@
 - Refactor the code.
 - You should not be access other routes without login.
 - If token is not prsent, redirect user to login page.
+- Get Feed and add feedSlice in Store.
+- Build User cards for display.
 - Created Profile Page
 - Added Clodnary to project to upload image
+- Created Dummy Setting Page
+-
+-
+-
+-
+-
+-
+-
+-
+-
+-
+-
+-
+-
+-
+-
+-
+-
+-
+-
+-
+-
 -
 -
