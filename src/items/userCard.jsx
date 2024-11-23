@@ -1,5 +1,6 @@
+import { motion } from "framer-motion";
+import PropTypes from "prop-types";
 import axios from "axios";
-import PropTypes from "prop-types"; // Import PropTypes
 import { useDispatch } from "react-redux";
 import { BASE_URL } from "../utils/constants";
 import { removeUserFromFeed } from "../store/feedSlice";
@@ -20,53 +21,62 @@ const UserCard = ({ user }) => {
     }
   };
 
+  const handleDragEnd = (event, info) => {
+    if (info.offset.x > 100) {
+      // Swiped right
+      handleSendRequest("interested", user?._id);
+    } else if (info.offset.x < -100) {
+      // Swiped left
+      handleSendRequest("ignored", user?._id);
+    }
+  };
+
   return (
-    <div className="bg-gray-800 text-white rounded-lg shadow-lg p-4 w-full max-w-md relative group">
+    <motion.div
+      className="bg-gray-800 text-white rounded-lg shadow-lg p-4 w-full max-w-md relative"
+      drag="x"
+      dragConstraints={{ left: 0, right: 0 }}
+      onDragEnd={handleDragEnd}
+      initial={{ opacity: 0, scale: 0.8 }}
+      animate={{ opacity: 1, scale: 1 }}
+      exit={{ opacity: 0, scale: 0.8 }}
+      whileHover={{ scale: 1.05 }}
+      whileTap={{ scale: 0.95 }}
+    >
       <div className="flex items-center space-x-4">
-        {/* Profile Image */}
         <img
           src={user?.photoUrl}
           alt={`${user?.firstName} ${user?.lastName}`}
           className="w-16 h-14 rounded-full border-2 border-blue-500"
         />
-        {/* User Info */}
-        <div className="relative">
+        <div>
           <h2 className="text-xl font-bold">{`${user?.firstName} ${user?.lastName}`}</h2>
-          <p className="text-sm text-gray-400 italic">{user?.about}</p>
+          {user?.about && (
+            <p className="text-sm text-gray-400 italic">{user.about}</p>
+          )}
           <p className="text-sm text-gray-500 mt-1">Age: {user?.age}</p>
           <p className="text-sm text-gray-500 capitalize">
             Gender: {user?.gender}
           </p>
-
-          {/* User Name on Hover */}
-          <div className="absolute top-0 left-0 right-0 bottom-0 flex justify-center h-5 items-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black bg-opacity-60 rounded-lg">
-            <span className="text-white text-xs font-bold">{`${user?.firstName} ${user?.lastName}`}</span>
-          </div>
         </div>
       </div>
-
-      {/* Skills */}
       <div className="mt-4">
         <h3 className="text-gray-400 text-sm font-semibold">Skills:</h3>
         <div className="flex flex-wrap gap-2 mt-2">
-          {Array.isArray(user?.skills) &&
-            user.skills.map(
-              (
-                skill,
-                index // Check if `skills` is an array
-              ) => (
-                <span
-                  key={index}
-                  className="bg-blue-400 text-blue-200 text-xs px-3 py-1 rounded-full shadow-md"
-                >
-                  {skill}
-                </span>
-              )
-            )}
+          {Array.isArray(user?.skills) && user.skills.length > 0 ? (
+            user.skills.map((skill, index) => (
+              <span
+                key={index}
+                className="bg-blue-400 text-blue-200 text-xs px-3 py-1 rounded-full shadow-md"
+              >
+                {skill}
+              </span>
+            ))
+          ) : (
+            <span className="text-gray-400 italic">No skills listed</span>
+          )}
         </div>
       </div>
-
-      {/* Buttons */}
       <div className="mt-4 flex justify-between">
         <button
           className="btn btn-primary"
@@ -81,11 +91,10 @@ const UserCard = ({ user }) => {
           Interested
         </button>
       </div>
-    </div>
+    </motion.div>
   );
 };
 
-// Prop validation using PropTypes
 UserCard.propTypes = {
   user: PropTypes.shape({
     _id: PropTypes.string.isRequired,
@@ -95,7 +104,7 @@ UserCard.propTypes = {
     about: PropTypes.string,
     age: PropTypes.number.isRequired,
     gender: PropTypes.string.isRequired,
-    skills: PropTypes.arrayOf(PropTypes.string), // Ensure skills is an array of strings
+    skills: PropTypes.arrayOf(PropTypes.string),
   }).isRequired,
 };
 

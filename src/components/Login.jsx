@@ -103,6 +103,7 @@ const Login = () => {
       dispatch(addUser(res.data));
       setSuccess(true);
       clearFields();
+      localStorage.setItem("user", JSON.stringify(res.data));
       navigate("/", { replace: true });
     } catch (err) {
       setError(err.response?.data?.message || "Login failed.");
@@ -148,8 +149,8 @@ const Login = () => {
   };
 
   return (
-    <div className="flex justify-center items-center h-screen bg-gray-900 text-white">
-      <div className="w-96 p-6 shadow-lg bg-gray-800 rounded-md">
+    <div className="flex justify-center items-center min-h-screen bg-gray-900 text-white">
+      <div className="w-full sm:w-96 p-6 shadow-lg bg-gray-800 rounded-md">
         <h2 className="text-2xl font-bold mb-4 text-center">
           {isSignUp ? "Sign Up" : "Login"}
         </h2>
@@ -261,33 +262,31 @@ const Login = () => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
-            <span
-              className="absolute right-4 top-11 cursor-pointer text-white"
+            <div
               onClick={() => setShowPassword(!showPassword)}
+              className="absolute right-4 top-11 text-white cursor-pointer"
             >
               {showPassword ? <AiOutlineEyeInvisible /> : <AiOutlineEye />}
-            </span>
+            </div>
           </div>
 
           <button
             type="submit"
-            className="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition"
+            className="w-full bg-blue-500 hover:bg-blue-600 text-white py-2 rounded-md mt-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
             {isSignUp ? "Sign Up" : "Login"}
           </button>
         </form>
 
-        <div className="text-center mt-4">
+        <p className="mt-4 text-center text-gray-400">
+          {isSignUp ? "Already have an account? " : "Don't have an account? "}
           <button
-            type="button"
             onClick={toggleForm}
-            className="text-blue-400 hover:underline"
+            className="text-blue-500 hover:text-blue-600 focus:outline-none"
           >
-            {isSignUp
-              ? "Already have an account? Login here"
-              : "Don't have an account? Sign up"}
+            {isSignUp ? "Login" : "Sign Up"}
           </button>
-        </div>
+        </p>
       </div>
     </div>
   );

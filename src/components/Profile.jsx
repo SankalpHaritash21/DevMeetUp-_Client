@@ -55,15 +55,15 @@ const Profile = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-900 flex justify-center items-center px-4 py-10">
-      <div className="bg-gray-800 rounded-xl shadow-lg p-6 w-full max-w-md">
+    <div className="min-h-screen bg-gray-900 flex justify-center items-center px-4 py-10 sm:px-6 md:px-8">
+      <div className="bg-gray-800 rounded-xl shadow-lg p-6 w-full max-w-lg lg:max-w-xl xl:max-w-2xl">
         {/* Profile Header */}
         <div className="flex flex-col items-center relative">
           {/* Profile Image with hover zoom effect */}
           <img
             src={image || user?.photoUrl || "https://via.placeholder.com/150"}
             alt="User Avatar"
-            className="w-28 h-28 rounded-full border-4 border-blue-500 shadow-md mb-4 transform transition-all duration-300 ease-in-out hover:scale-110"
+            className="w-24 h-24 sm:w-28 sm:h-28 lg:w-32 lg:h-32 rounded-full border-4 border-blue-500 shadow-md mb-4 transform transition-all duration-300 ease-in-out hover:scale-110"
           />
 
           {/* Pencil icon at the top right corner of the image */}
@@ -74,9 +74,9 @@ const Profile = () => {
 
           {/* Modal for uploading new image */}
           {isModalOpen && (
-            <div className="fixed inset-0 bg-gray-700 bg-opacity-50 flex justify-center items-center z-50 transition-opacity duration-300 ease-in-out">
-              <div className="bg-white p-8 rounded-lg w-96 shadow-lg transform transition-all duration-300 ease-in-out scale-95 hover:scale-100">
-                <h2 className="text-2xl font-bold text-gray-800 mb-4 text-center">
+            <div className="fixed inset-0 bg-gray-700 bg-opacity-50 flex justify-center items-center z-50">
+              <div className="bg-white p-8 rounded-lg w-80 sm:w-96 shadow-lg transform scale-95 hover:scale-100">
+                <h2 className="text-xl sm:text-2xl font-bold text-gray-800 mb-4 text-center">
                   Upload New Profile Picture
                 </h2>
 
@@ -95,7 +95,7 @@ const Profile = () => {
                 )}
 
                 {/* Buttons */}
-                <div className="flex justify-between">
+                <div className="flex justify-center">
                   <button
                     className="w-full bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition-all duration-300 ease-in-out"
                     onClick={closeModal} // Close modal on button click
@@ -107,31 +107,45 @@ const Profile = () => {
             </div>
           )}
 
-          <h1 className="mt-4 text-2xl font-bold text-white">
+          <h1 className="mt-4 text-xl sm:text-2xl lg:text-3xl font-bold text-white text-center">
             {`${user?.firstName} ${user?.lastName}`}
           </h1>
-          <p className="text-gray-400 text-sm mt-1 italic">{user?.about}</p>
+          <p className="text-gray-400 text-sm sm:text-base mt-1 italic text-center">
+            {user?.about}
+          </p>
         </div>
 
         {/* User Details Section */}
         <div className="mt-6">
           <div className="flex items-center justify-between border-b border-gray-700 py-2">
-            <span className="text-gray-400 text-sm font-medium">Email</span>
-            <span className="text-gray-300">{user?.emailId}</span>
+            <span className="text-gray-400 text-xs sm:text-sm font-medium">
+              Email
+            </span>
+            <span className="text-gray-300 text-xs sm:text-sm">
+              {user?.emailId}
+            </span>
           </div>
           <div className="flex items-center justify-between border-b border-gray-700 py-2">
-            <span className="text-gray-400 text-sm font-medium">Age</span>
-            <span className="text-gray-300">{user?.age}</span>
+            <span className="text-gray-400 text-xs sm:text-sm font-medium">
+              Age
+            </span>
+            <span className="text-gray-300 text-xs sm:text-sm">
+              {user?.age}
+            </span>
           </div>
           <div className="flex items-center justify-between border-b border-gray-700 py-2">
-            <span className="text-gray-400 text-sm font-medium">Gender</span>
-            <span className="text-gray-300 capitalize">{user?.gender}</span>
+            <span className="text-gray-400 text-xs sm:text-sm font-medium">
+              Gender
+            </span>
+            <span className="text-gray-300 text-xs sm:text-sm capitalize">
+              {user?.gender}
+            </span>
           </div>
           <div className="flex items-center justify-between py-2">
-            <span className="text-gray-400 text-sm font-medium">
+            <span className="text-gray-400 text-xs sm:text-sm font-medium">
               Member Since
             </span>
-            <span className="text-gray-300">
+            <span className="text-gray-300 text-xs sm:text-sm">
               {new Date(user?.createdAt).toLocaleDateString()}
             </span>
           </div>

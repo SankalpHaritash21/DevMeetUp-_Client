@@ -14,10 +14,12 @@ const Connections = () => {
   }
 
   return (
-    <div className="p-6 bg-gray-50 min-h-screen">
-      <h2 className="text-3xl font-bold mb-6 text-center">Your Connections</h2>
+    <div className="p-6 bg-gray-50 dark:bg-gray-800 min-h-screen">
+      <h2 className="text-3xl font-bold mb-6 text-center text-gray-800 dark:text-white">
+        Your Connections
+      </h2>
       {connections.length === 0 ? (
-        <div className="text-gray-500 text-lg text-center">
+        <div className="text-gray-500 dark:text-gray-300 text-lg text-center">
           You have no connections yet.
         </div>
       ) : (
@@ -25,7 +27,7 @@ const Connections = () => {
           {connections.map((user) => (
             <li
               key={user._id} // Assuming `_id` is the unique identifier
-              className="bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 p-6 flex flex-col items-center text-center"
+              className="bg-white dark:bg-gray-700 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 p-6 flex flex-col items-center text-center"
             >
               {/* User Profile Picture */}
               <img
@@ -35,23 +37,27 @@ const Connections = () => {
               />
 
               {/* User Info */}
-              <h3 className="text-lg font-semibold text-gray-800">
+              <h3 className="text-lg font-semibold text-gray-800 dark:text-white">
                 {user.firstName} {user.lastName}
               </h3>
-              <p className="text-sm text-gray-600 mt-1">{user.about}</p>
+              <p className="text-sm text-gray-600 dark:text-gray-300 mt-1">
+                {user.about}
+              </p>
 
               {/* Skills */}
               <div className="flex flex-wrap gap-2 mt-4 justify-center">
                 {user.skills?.slice(0, 4).map((skill, index) => (
                   <span
                     key={index}
-                    className="bg-blue-100 text-blue-600 text-xs font-medium px-3 py-1 rounded-full"
+                    className="bg-blue-100 dark:bg-blue-600 text-blue-600 dark:text-blue-200 text-xs font-medium px-3 py-1 rounded-full"
                   >
                     {skill}
                   </span>
                 ))}
                 {user.skills?.length > 4 && (
-                  <span className="text-sm text-gray-500">+ more</span>
+                  <span className="text-sm text-gray-500 dark:text-gray-400">
+                    + more
+                  </span>
                 )}
               </div>
 

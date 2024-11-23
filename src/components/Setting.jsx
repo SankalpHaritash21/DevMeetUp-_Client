@@ -121,13 +121,13 @@ const Setting = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-r from-blue-500 to-indigo-700 py-12 px-4 sm:px-6 lg:px-8 flex flex-col lg:flex-row justify-center items-center gap-8">
+    <div className="min-h-screen bg-gradient-to-r from-blue-500 to-indigo-700 py-12 px-4 sm:px-6 lg:px-8 flex flex-col lg:flex-row justify-center items-center gap-8 dark:bg-gray-900 dark:text-white">
       {/* User Card */}
       <SelfCard user={userData} />
 
       {/* Profile Edit Form */}
-      <div className="bg-white rounded-lg shadow-lg w-full max-w-4xl p-8">
-        <h1 className="text-3xl font-semibold text-gray-800 mb-6 text-center">
+      <div className="bg-white dark:bg-gray-800 dark:text-white rounded-lg shadow-lg w-full max-w-4xl p-8">
+        <h1 className="text-3xl font-semibold text-gray-800 dark:text-white mb-6 text-center">
           Edit Your Profile
         </h1>
 
@@ -137,7 +137,7 @@ const Setting = () => {
             <div>
               <label
                 htmlFor="firstName"
-                className="block text-sm font-medium text-gray-700 mb-2"
+                className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
               >
                 First Name
               </label>
@@ -147,7 +147,7 @@ const Setting = () => {
                 name="firstName"
                 value={userData.firstName}
                 onChange={handleChange}
-                className="block w-full px-4 py-3 border-2 border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="block w-full px-4 py-3 border-2 border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-indigo-500 dark:text-white"
               />
             </div>
 
@@ -155,7 +155,7 @@ const Setting = () => {
             <div>
               <label
                 htmlFor="lastName"
-                className="block text-sm font-medium text-gray-700 mb-2"
+                className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
               >
                 Last Name
               </label>
@@ -165,7 +165,7 @@ const Setting = () => {
                 name="lastName"
                 value={userData.lastName}
                 onChange={handleChange}
-                className="block w-full px-4 py-3 border-2 border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="block w-full px-4 py-3 border-2 border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-indigo-500 dark:text-white"
               />
             </div>
           </div>
@@ -174,7 +174,7 @@ const Setting = () => {
           <div>
             <label
               htmlFor="photoUrl"
-              className="block text-sm font-medium text-gray-700 mb-2"
+              className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
             >
               Photo URL
             </label>
@@ -184,7 +184,7 @@ const Setting = () => {
               name="photoUrl"
               value={userData.photoUrl}
               onChange={handleChange}
-              className="block w-full px-4 py-3 border-2 border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="block w-full px-4 py-3 border-2 border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-indigo-500 dark:text-white"
             />
           </div>
 
@@ -192,7 +192,7 @@ const Setting = () => {
           <div>
             <label
               htmlFor="age"
-              className="block text-sm font-medium text-gray-700 mb-2"
+              className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
             >
               Age
             </label>
@@ -202,7 +202,7 @@ const Setting = () => {
               name="age"
               value={userData.age}
               onChange={handleChange}
-              className="block w-full px-4 py-3 border-2 border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="block w-full px-4 py-3 border-2 border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-indigo-500 dark:text-white"
             />
           </div>
 
@@ -210,7 +210,7 @@ const Setting = () => {
           <div>
             <label
               htmlFor="gender"
-              className="block text-sm font-medium text-gray-700 mb-2"
+              className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
             >
               Gender
             </label>
@@ -219,7 +219,7 @@ const Setting = () => {
               name="gender"
               value={userData.gender}
               onChange={handleChange}
-              className="block w-full px-4 py-3 border-2 border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="block w-full px-4 py-3 border-2 border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-indigo-500 dark:text-white"
             >
               <option value="male">Male</option>
               <option value="female">Female</option>
@@ -231,7 +231,7 @@ const Setting = () => {
           <div>
             <label
               htmlFor="about"
-              className="block text-sm font-medium text-gray-700 mb-2"
+              className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
             >
               About
             </label>
@@ -241,7 +241,7 @@ const Setting = () => {
               value={userData.about}
               onChange={handleChange}
               rows="4"
-              className="block w-full px-4 py-3 border-2 border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="block w-full px-4 py-3 border-2 border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-indigo-500 dark:text-white"
             />
           </div>
 
@@ -249,63 +249,62 @@ const Setting = () => {
           <div className="mb-6">
             <label
               htmlFor="skills"
-              className="block text-sm font-semibold text-gray-700 mb-3"
+              className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
             >
               Skills
             </label>
-
-            <div className="flex items-center space-x-2 mb-3">
+            <div className="flex flex-wrap gap-2">
+              {userData.skills.map((skill, index) => (
+                <div
+                  key={index}
+                  className="bg-indigo-500 text-white px-3 py-1 rounded-lg flex items-center justify-between"
+                >
+                  <span>{skill}</span>
+                  <button
+                    type="button"
+                    onClick={() => handleDeleteSkill(index)}
+                    className="ml-2 text-red-500 hover:text-red-700"
+                  >
+                    <FaTimes />
+                  </button>
+                </div>
+              ))}
+            </div>
+            <div className="flex items-center mt-2">
               <input
                 type="text"
-                id="newSkill"
                 name="newSkill"
-                value={userData.newSkill || ""}
-                onChange={(e) =>
-                  setUserData({ ...userData, newSkill: e.target.value })
-                }
-                className="w-full px-4 py-3 border-2 border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                value={userData.newSkill}
+                onChange={handleChange}
+                placeholder="Add a new skill"
+                className="block w-full px-4 py-3 border-2 border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-indigo-500 dark:text-white"
               />
               <button
                 type="button"
                 onClick={handleAddSkill}
-                className="bg-indigo-500 text-white px-4 py-2 rounded-md"
+                className="ml-2 bg-indigo-600 text-white px-3 py-2 rounded-md hover:bg-indigo-700 text-sm md:text-xs "
               >
                 Add Skill
               </button>
             </div>
-
-            {/* Display Skills */}
-            <div className="flex gap-x-5">
-              {userData.skills.map((skill, index) => (
-                <div
-                  key={index}
-                  className="flex items-center justify-between bg-blue-300 px-4 py-2 rounded-xl gap-x-5"
-                >
-                  <span className="text-gray-700">{skill}</span>
-                  <FaTimes
-                    onClick={() => handleDeleteSkill(index)}
-                    className="text-red-500 cursor-pointer"
-                  />
-                </div>
-              ))}
-            </div>
           </div>
 
           {/* Error and Toast */}
-          {error && <p className="text-red-600 text-center text-sm">{error}</p>}
+          {error && <div className="text-red-500 text-sm">{error}</div>}
           {showToast && (
-            <div className="text-green-600 text-center text-sm">
+            <div className="text-green-500 text-sm">
               Profile updated successfully!
             </div>
           )}
 
-          {/* Save Button */}
-          <button
-            type="submit"
-            className="w-full bg-indigo-500 text-white px-4 py-2 rounded-md"
-          >
-            Save Changes
-          </button>
+          <div className="text-center">
+            <button
+              type="submit"
+              className="w-full bg-indigo-600 text-white px-6 py-3 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:bg-indigo-500 dark:hover:bg-indigo-400 dark:focus:ring-indigo-400"
+            >
+              Save Changes
+            </button>
+          </div>
         </form>
       </div>
     </div>

@@ -13,12 +13,12 @@ const SelfCard = ({ user }) => {
   } = user || {};
 
   return (
-    <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-sm">
+    <div className="bg-gray-500 rounded-lg shadow-lg p-6 w-full max-w-sm sm:max-w-md md:max-w-lg lg:max-w-xl xl:max-w-2xl">
       <div className="w-full flex items-center justify-center">
         <img
           src={photoUrl}
           alt={`${firstName} ${lastName}`}
-          className="w-64 h-72 rounded-xl border-2 border-blue-500"
+          className="w-64 h-72 rounded-xl border-2 border-blue-500 bg-transparent"
         />
       </div>
       <h2 className="text-2xl font-semibold text-gray-800 mb-2">
