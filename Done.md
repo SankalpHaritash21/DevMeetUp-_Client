@@ -28,7 +28,7 @@
 - Added Clodnary to project to upload image
 - Created Dummy Setting Page
 - Show toast msg on save our file.
--
+- Created a connected user page.
 -
 -
 -
