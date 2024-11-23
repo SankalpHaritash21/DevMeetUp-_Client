@@ -1,4 +1,6 @@
+import axios from "axios";
 import useConnections from "../hooks/useConnections";
+import { BASE_URL } from "../utils/constants";
 
 const Connections = () => {
   const { connections, loading, error } = useConnections();
@@ -12,6 +14,19 @@ const Connections = () => {
       <div className="text-center mt-10 text-lg text-red-500">{error}</div>
     );
   }
+
+  const removeConnection = async (_id) => {
+    console.log(_id);
+    try {
+      await axios.post(
+        `${BASE_URL}/remove/connection/${_id}`, // Pass _id as the URL parameter
+        {}, // No body needed here for removing the connection
+        { withCredentials: true } // Include credentials for authentication
+      );
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
     <div className="p-6 bg-gray-50 dark:bg-gray-800 min-h-screen">
@@ -66,7 +81,10 @@ const Connections = () => {
                 <button className="bg-green-500 hover:bg-green-600 text-white text-sm px-4 py-2 rounded-lg">
                   Message
                 </button>
-                <button className="bg-red-500 hover:bg-red-600 text-white text-sm px-4 py-2 rounded-lg">
+                <button
+                  className="bg-red-500 hover:bg-red-600 text-white text-sm px-4 py-2 rounded-lg"
+                  onClick={() => removeConnection(user._id)}
+                >
                   Remove
                 </button>
               </div>
