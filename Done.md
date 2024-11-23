@@ -27,6 +27,7 @@
 - Created Profile Page
 - Added Clodnary to project to upload image
 - Created Dummy Setting Page
+- Show toast msg on save our file.
 -
 -
 -
