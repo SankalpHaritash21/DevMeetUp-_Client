@@ -1,34 +1,16 @@
-import { useEffect, useState } from "react";
-import axios from "axios";
-import { BASE_URL } from "../utils/constants";
-import { useDispatch, useSelector } from "react-redux";
-import { addConnections } from "../store/connectionSlice";
+import useConnections from "../hooks/useConnections";
 
 const Connections = () => {
-  const dispatch = useDispatch();
-  const [loading, setLoading] = useState(true);
-  const connections = useSelector((store) => store.connection);
-
-  const fetchConnectedUsers = async () => {
-    try {
-      const res = await axios.get(`${BASE_URL}/user/connections`, {
-        withCredentials: true,
-      });
-      console.log(res.data.data); // Check response structure
-      dispatch(addConnections(res.data.data || [])); // Ensure it's an array
-      setLoading(false);
-    } catch (error) {
-      console.error("Error fetching connections:", error);
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchConnectedUsers();
-  }, []);
+  const { connections, loading, error } = useConnections();
 
   if (loading) {
     return <div className="text-center mt-10 text-lg">Loading...</div>;
+  }
+
+  if (error) {
+    return (
+      <div className="text-center mt-10 text-lg text-red-500">{error}</div>
+    );
   }
 
   return (

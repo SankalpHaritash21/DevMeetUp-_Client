@@ -3,11 +3,10 @@ import { createSlice } from "@reduxjs/toolkit";
 const requestSlice = createSlice({
   name: "request",
   initialState: null,
-  requestSlice: {
-    addRequest: (state, actions) => actions.payload,
+  reducers: {
+    addRequest: (state, action) => action.payload, // Fixed parameter typo
     removeRequest: (state, action) => {
-      const newArray = state.filter((r) => r._id !== action.payload);
-      return newArray;
+      return state.filter((r) => r._id !== action.payload); // Corrected logic
     },
   },
 });

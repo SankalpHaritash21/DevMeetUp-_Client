@@ -2,6 +2,7 @@ import axios from "axios";
 import PropTypes from "prop-types"; // Import PropTypes
 import { useDispatch } from "react-redux";
 import { BASE_URL } from "../utils/constants";
+import { removeUserFromFeed } from "../store/feedSlice";
 
 const UserCard = ({ user }) => {
   const dispatch = useDispatch();
@@ -13,7 +14,7 @@ const UserCard = ({ user }) => {
         {},
         { withCredentials: true }
       );
-      // dispatch(removeUserFromFeed(userId)); // Uncomment if needed
+      dispatch(removeUserFromFeed(userId));
     } catch (err) {
       console.error(err);
     }
