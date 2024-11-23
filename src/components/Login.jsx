@@ -28,37 +28,37 @@ const Login = () => {
     name.trim().length >= 2 &&
     name.trim().length <= 50 &&
     /^[a-zA-Z\s-]+$/.test(name);
-  const validatePassword = (password) => password.length >= 8;
+  const validatePassword = (password) => password.length >= 6;
 
   const handleSignUp = async () => {
-    if (!firstName || !lastName || !emailId || !password || !gender) {
-      setError("Please fill in all fields.");
-      return;
-    }
-
-    if (!validateEmail(emailId)) {
-      setError("Please enter a valid email address.");
-      return;
-    }
-
-    if (!validateName(firstName) || !validateName(lastName)) {
-      setError(
-        "First and last names must be between 2-50 characters and contain only alphabetic characters, spaces, or hyphens."
-      );
-      return;
-    }
-
-    if (!validatePassword(password)) {
-      setError("Password must be at least 8 characters long.");
-      return;
-    }
-
-    if (skills.length === 0) {
-      setError("Please add at least one skill.");
-      return;
-    }
-
     try {
+      if (!firstName || !lastName || !emailId || !password || !gender) {
+        setError("Please fill in all fields.");
+        return;
+      }
+
+      if (!validateEmail(emailId)) {
+        setError("Please enter a valid email address.");
+        return;
+      }
+
+      if (!validateName(firstName) || !validateName(lastName)) {
+        setError(
+          "First and last names must be between 2-50 characters and contain only alphabetic characters, spaces, or hyphens."
+        );
+        return;
+      }
+
+      if (!validatePassword(password)) {
+        setError("Password must be at least 8 characters long.");
+        return;
+      }
+
+      if (skills.length === 0) {
+        setError("Please add at least one skill.");
+        return;
+      }
+
       const res = await axios.post(
         `${BASE_URL}/signup`,
         {
@@ -73,9 +73,10 @@ const Login = () => {
         { withCredentials: true }
       );
       setSuccess(true);
+      console.log(res.data);
       dispatch(addUser(res.data));
       clearFields();
-      navigate("/", { replace: true });
+      navigate("/profile", { replace: true });
     } catch (err) {
       setError(err.response?.data?.message || "Sign Up failed.");
     }
@@ -98,6 +99,7 @@ const Login = () => {
         { emailId, password },
         { withCredentials: true }
       );
+      console.log(res.data);
       dispatch(addUser(res.data));
       setSuccess(true);
       clearFields();

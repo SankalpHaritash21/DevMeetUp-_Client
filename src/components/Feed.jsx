@@ -1,32 +1,28 @@
-import axios from "axios";
+import { useEffect } from "react";
+import useFeed from "../hooks/useFeed";
 import UserCard from "../items/userCard";
-import { useDispatch, useSelector } from "react-redux";
-import { useState, useEffect } from "react";
-import { addFeed } from "../store/feedSlice";
-import { BASE_URL } from "../utils/constants";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 const Feed = () => {
-  const dispatch = useDispatch();
-  const [error, setError] = useState("");
-  const feed = useSelector((store) => store.feed);
+  const { feed, loading, error } = useFeed();
+  const user = useSelector((store) => store.user);
+  const navigate = useNavigate();
 
-  const getFeed = async () => {
-    try {
-      if (feed.length > 0) return;
-      const res = await axios.get(`${BASE_URL}/feed`, {
-        withCredentials: true,
-      });
-
-      dispatch(addFeed(res.data));
-    } catch (err) {
-      setError("Failed to fetch feed data. Please try again.");
-      console.error(err);
-    }
-  };
-
+  // Redirect if user is not logged in
   useEffect(() => {
-    getFeed();
-  }, []);
+    if (!user) {
+      navigate("/login", { replace: true });
+    }
+  }, [user]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-900 text-white flex items-center justify-center">
+        <p className="text-xl font-bold text-blue-400">Loading...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gray-900 text-white py-10 px-4">

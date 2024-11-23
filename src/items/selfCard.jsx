@@ -1,15 +1,23 @@
 import PropTypes from "prop-types";
 
 const SelfCard = ({ user }) => {
-  // Destructure user properly
-  const { firstName, lastName, age, gender, about, skills, photoUrl } = user;
+  // Destructure user safely with default values
+  const {
+    firstName = "",
+    lastName = "",
+    age = "N/A",
+    gender = "N/A",
+    about = "No description provided.",
+    skills = [],
+    photoUrl = "",
+  } = user || {};
 
   return (
     <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-sm">
       <div className="w-full flex items-center justify-center">
         <img
           src={photoUrl}
-          alt={`${user?.firstName} ${user?.lastName}`}
+          alt={`${firstName} ${lastName}`}
           className="w-64 h-72 rounded-xl border-2 border-blue-500"
         />
       </div>
@@ -17,18 +25,18 @@ const SelfCard = ({ user }) => {
         {firstName} {lastName}
       </h2>
       <p className="text-gray-600 mb-2">
-        <strong>Age:</strong> {age || "N/A"}
+        <strong>Age:</strong> {age}
       </p>
       <p className="text-gray-600 mb-2">
-        <strong>Gender:</strong> {gender || "N/A"}
+        <strong>Gender:</strong> {gender}
       </p>
       <p className="text-gray-600 mb-4">
-        <strong>About:</strong> {about || "No description provided."}
+        <strong>About:</strong> {about}
       </p>
       <div>
         <h3 className="text-sm font-semibold text-gray-700 mb-2">Skills:</h3>
         <div className="flex flex-wrap gap-2">
-          {skills.length > 0 ? (
+          {skills && skills.length > 0 ? (
             skills.map((skill, index) => (
               <span
                 key={index}

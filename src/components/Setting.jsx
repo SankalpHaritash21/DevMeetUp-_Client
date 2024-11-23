@@ -1,28 +1,60 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { FaTimes } from "react-icons/fa";
 import axios from "axios";
 import { BASE_URL } from "../utils/constants";
 import { addUser } from "../store/userSlice";
 import SelfCard from "../items/selfCard";
+import Loading from "../items/Loading";
 
 const Setting = () => {
   const user = useSelector((store) => store.user);
   const dispatch = useDispatch();
 
   const [userData, setUserData] = useState({
-    firstName: user.firstName || "",
-    lastName: user.lastName || "",
-    photoUrl: user.photoUrl || "",
-    age: user.age || "",
-    gender: user.gender || "",
-    about: user.about || "",
-    skills: user.skills || [],
+    firstName: "",
+    lastName: "",
+    photoUrl: "",
+    age: "",
+    gender: "male",
+    about: "",
+    skills: [],
     newSkill: "",
   });
 
   const [error, setError] = useState("");
   const [showToast, setShowToast] = useState(false);
+
+  useEffect(() => {
+    // If user is not available in Redux, check localStorage
+    if (!user) {
+      const userFromLocalStorage = JSON.parse(localStorage.getItem("user"));
+      if (userFromLocalStorage) {
+        dispatch(addUser(userFromLocalStorage));
+        setUserData({
+          firstName: userFromLocalStorage.firstName,
+          lastName: userFromLocalStorage.lastName,
+          photoUrl: userFromLocalStorage.photoUrl,
+          age: userFromLocalStorage.age,
+          gender: userFromLocalStorage.gender,
+          about: userFromLocalStorage.about,
+          skills: userFromLocalStorage.skills,
+          newSkill: "",
+        });
+      }
+    } else {
+      setUserData({
+        firstName: user.firstName,
+        lastName: user.lastName,
+        photoUrl: user.photoUrl,
+        age: user.age,
+        gender: user.gender,
+        about: user.about,
+        skills: user.skills,
+        newSkill: "",
+      });
+    }
+  }, [user, dispatch]);
 
   // Handle input changes for form fields
   const handleChange = (e) => {
@@ -62,18 +94,19 @@ const Setting = () => {
       const response = await axios.post(
         `${BASE_URL}/profile/edit`,
         {
-          firstName: userData.firstName,
-          lastName: userData.lastName,
-          photoUrl: userData.photoUrl,
-          age: userData.age,
-          gender: userData.gender,
-          about: userData.about,
-          skills: userData.skills,
+          firstName: userData.firstName || "",
+          lastName: userData.lastName || "",
+          photoUrl: userData.photoUrl || "",
+          age: userData.age || "",
+          gender: userData.gender || "",
+          about: userData.about || "",
+          skills: userData.skills || [],
         },
         { withCredentials: true }
       );
 
       dispatch(addUser(response.data.data)); // Update the Redux store
+      localStorage.setItem("user", JSON.stringify(response.data.data)); // Update localStorage
       setShowToast(true); // Show toast
       setTimeout(() => {
         setShowToast(false);
@@ -82,6 +115,10 @@ const Setting = () => {
       setError(error.response?.data?.message || "Failed to save changes.");
     }
   };
+
+  if (!user) {
+    return <Loading />;
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-r from-blue-500 to-indigo-700 py-12 px-4 sm:px-6 lg:px-8 flex flex-col lg:flex-row justify-center items-center gap-8">
@@ -208,25 +245,6 @@ const Setting = () => {
             />
           </div>
 
-          {/* Phone Number */}
-          {/* <div>
-            <label
-              htmlFor="phone"
-              className="block text-sm font-medium text-gray-700 mb-2"
-            >
-              Phone Number
-            </label>
-            <input
-              type="tel"
-              id="phone"
-              name="phone"
-              value={userData.phone || ""}
-              onChange={handleChange}
-              className="block w-full px-4 py-3 border-2 border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
-              placeholder="Enter phone number"
-            />
-          </div> */}
-
           {/* Skills Section */}
           <div className="mb-6">
             <label
@@ -245,54 +263,50 @@ const Setting = () => {
                 onChange={(e) =>
                   setUserData({ ...userData, newSkill: e.target.value })
                 }
-                className="block w-full px-4 py-3 border-2 border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition duration-300 ease-in-out"
-                placeholder="Add a new skill"
+                className="w-full px-4 py-3 border-2 border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
               />
               <button
                 type="button"
                 onClick={handleAddSkill}
-                className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 focus:outline-none"
+                className="bg-indigo-500 text-white px-4 py-2 rounded-md"
               >
-                Add
+                Add Skill
               </button>
             </div>
 
-            <div className="flex flex-wrap gap-2 mb-4">
+            {/* Display Skills */}
+            <div className="flex gap-x-5">
               {userData.skills.map((skill, index) => (
                 <div
                   key={index}
-                  className="flex items-center bg-indigo-100 text-indigo-600 py-1 px-3 rounded-full text-sm"
+                  className="flex items-center justify-between bg-blue-300 px-4 py-2 rounded-xl gap-x-5"
                 >
-                  {skill}
-                  <button
+                  <span className="text-gray-700">{skill}</span>
+                  <FaTimes
                     onClick={() => handleDeleteSkill(index)}
-                    className="ml-2 text-red-600 hover:text-red-800 focus:outline-none"
-                  >
-                    <FaTimes />
-                  </button>
+                    className="text-red-500 cursor-pointer"
+                  />
                 </div>
               ))}
             </div>
           </div>
 
-          {/* Error message */}
-          {error && <p className="text-red-500 text-sm">{error}</p>}
+          {/* Error and Toast */}
+          {error && <p className="text-red-600 text-center text-sm">{error}</p>}
+          {showToast && (
+            <div className="text-green-600 text-center text-sm">
+              Profile updated successfully!
+            </div>
+          )}
 
-          {/* Submit Button */}
+          {/* Save Button */}
           <button
             type="submit"
-            className="w-full py-3 bg-indigo-600 text-white font-semibold rounded-md shadow-md hover:bg-indigo-700 focus:outline-none"
+            className="w-full bg-indigo-500 text-white px-4 py-2 rounded-md"
           >
             Save Changes
           </button>
         </form>
-
-        {/* Success Toast */}
-        {showToast && (
-          <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 p-4 bg-green-500 text-white rounded-lg shadow-lg">
-            Profile updated successfully!
-          </div>
-        )}
       </div>
     </div>
   );
